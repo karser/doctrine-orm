@@ -1,7 +1,25 @@
-| [Master][Master] | [2.5][2.5] |
-|:----------------:|:----------:|
-| [![Build status][Master image]][Master] | [![Build status][2.5 image]][2.5] |
-| [![Coverage Status][Master coverage image]][Master coverage] | [![Coverage Status][2.5 coverage image]][2.5 coverage] |
+## doctrine/orm v2.7 fork with manyToOne associations support in Embeddable
+
+Surprisingly I found out that doctrine [doesn't](https://github.com/doctrine/orm/issues/4291)
+[support](https://github.com/doctrine/orm/issues/4747) [relations](https://github.com/doctrine/orm/issues/4546)
+in embeddable and [silently ignores them](https://github.com/doctrine/orm/pull/5809).
+This fork adds support of manyToOne associations and is based on the following PRs: https://github.com/doctrine/orm/pull/1502 https://github.com/doctrine/orm/pull/5962
+
+Add this to your project's root composer.json:
+```
+{
+    "repositories": [
+        {
+            "type": "git",
+            "url": "git@github.com:karser/doctrine-orm.git"
+        }
+    ],
+    "require": {
+        "doctrine/orm": "dev-embeddable-relations-2.7 as v2.7.0",
+    }
+}
+```
+
 
 Doctrine 2 is an object-relational mapper (ORM) for PHP 7.1+ that provides transparent persistence
 for PHP objects. It sits on top of a powerful database abstraction layer (DBAL). One of its key features
