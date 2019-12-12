@@ -622,6 +622,10 @@ class BasicEntityPersister implements EntityPersister
                 continue;
             }
 
+            if (!(is_array($change))) {
+                continue;
+            }
+
             $newVal = $change[1];
 
             if ( ! isset($this->class->associationMappings[$field])) {
