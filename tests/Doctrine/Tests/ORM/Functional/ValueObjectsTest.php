@@ -56,6 +56,10 @@ class ValueObjectsTest extends OrmFunctionalTestCase
             );
         }
         $this->assertInstanceOf(ReflectionEmbeddedProperty::class, $classMetadata->getReflectionProperty('address.street'));
+
+        $classMetadata = $this->_em->getClassMetadata(__NAMESPACE__ . '\EmbeddableManyToOneEntity');
+        $this->assertInstanceOf('Doctrine\Common\Reflection\RuntimePublicReflectionProperty', $classMetadata->getReflectionProperty('embed'));
+        $this->assertInstanceOf('Doctrine\ORM\Mapping\ReflectionEmbeddedProperty', $classMetadata->getReflectionProperty('embed.unidirectional'));
     }
 
     public function testCRUD()
@@ -650,4 +654,52 @@ class DDCNestingEmbeddable4
 
     /** @Embedded(class="DDCNestingEmbeddable1") */
     public $nested;
+}
+
+/**
+ * @Entity
+ */
+class EmbeddableManyToOneEntity
+{
+    const CLASSNAME = __CLASS__;
+    /**
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="AUTO")
+     */
+    public $id;
+    /**
+     * @Embedded(class = "ManyToOneEmbeddable", columnPrefix = false)
+     */
+    public $embed;
+    public function __construct()
+    {
+        $this->embed = new ManyToOneEmbeddable();
+    }
+}
+
+/**
+ * @Entity
+ */
+class UnidirectionalManyToOneEntity
+{
+    const CLASSNAME = __CLASS__;
+    /**
+     * @Id
+     * @Column(type="integer")
+     * @GeneratedValue(strategy="AUTO")
+     */
+    public $id;
+}
+
+/**
+ * @Embeddable
+ */
+class ManyToOneEmbeddable
+{
+    const CLASSNAME = __CLASS__;
+    /**
+     * @ManyToOne(targetEntity="UnidirectionalManyToOneEntity")
+     */
+    public $unidirectional;
 }
